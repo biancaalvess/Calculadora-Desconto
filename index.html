@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Vendas - Grupo G5</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app">
+        <div class="container">
+            <header class="header">
+                <div class="header-icon">
+                    <svg class="icon-calc" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="12" y2="18"/><line x1="14" y1="18" x2="16" y2="18"/>
+                    </svg>
+                </div>
+                <h1 class="title">Calculadora de Vendas</h1>
+                <p class="subtitle">Sistema de cálculo de descontos e parcelamentos</p>
+            </header>
+
+            <div class="grid-layout">
+                <!-- Coluna esquerda: Dados da Venda -->
+                <div class="card card-form">
+                    <h2 class="card-title">Dados da Venda</h2>
+
+                    <form id="formCalculadora">
+                        <div class="field">
+                            <label class="label" for="productValue">Valor do Produto (R$)</label>
+                            <div class="input-wrap">
+                                <span class="input-icon" aria-hidden="true">R$</span>
+                                <input type="text" id="productValue" name="total_bruto" inputmode="decimal" placeholder="0,00" class="input">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="entryValue">Valor da Entrada (R$)</label>
+                            <div class="input-wrap">
+                                <span class="input-icon" aria-hidden="true">R$</span>
+                                <input type="text" id="entryValue" name="valor_entrada" inputmode="decimal" placeholder="0,00" class="input">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Forma de pagamento da entrada</label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="metodo_entrada" value="dinheiro" checked>
+                                    <span>Dinheiro, Pix ou Débito (20%)</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="metodo_entrada" value="cartao">
+                                    <span>Cartão (0%)</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" for="prazo">Prazo (parcelas)</label>
+                            <select id="prazo" name="prazo" class="input">
+                                <option value="1">1x (À vista)</option>
+                                <option value="4">4x</option>
+                                <option value="5">5x</option>
+                                <option value="7">7x</option>
+                                <option value="9">9x</option>
+                                <option value="11">11x</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Tipo de venda</label>
+                            <div class="radio-group">
+                                <label class="radio-label">
+                                    <input type="radio" name="tipo_venda" value="crediario" checked>
+                                    <span>Crediário</span>
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="tipo_venda" value="cartao">
+                                    <span>Cartão de Crédito</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-calcular">Calcular</button>
+                    </form>
+                </div>
+
+                <!-- Coluna direita: Resultados -->
+                <div class="results">
+                    <div id="erro" class="erro" role="alert" hidden></div>
+
+                    <div class="card card-verde">
+                        <h3 class="card-result-title">Valor da Entrada</h3>
+                        <p class="card-result-sub">Dinheiro, Pix ou Débito</p>
+                        <p class="card-result-value" id="displayEntry">R$ 0,00</p>
+                    </div>
+
+                    <div class="card card-white">
+                        <h3 class="card-result-title border">Desconto da Entrada (À Vista)</h3>
+                        <p class="dica-texto">Apenas Dinheiro, Pix ou Débito: Entrada × 20%. Se a entrada for no Cartão, fica R$ 0,00.</p>
+                        <div class="grid-2">
+                            <div class="box box-verde-claro">
+                                <p class="box-label">% Desconto À Vista</p>
+                                <p class="box-value" id="displayDiscCash">0%</p>
+                            </div>
+                            <div class="box box-verde-claro">
+                                <p class="box-label">Valor Desc. À Vista</p>
+                                <p class="box-value" id="displayCashDiscountValue">R$ 0,00</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card card-white">
+                        <h3 class="card-result-title border">Parcelado (Crediário)</h3>
+                        <p class="dica-texto">Total do Parcelamento = Valor Produtos − Entrada. O desconto usa a tabela de prazos (coluna Crediário).</p>
+                        <div class="grid-2">
+                            <div class="box box-verde-claro">
+                                <p class="box-label">% Desc. Crediário</p>
+                                <p class="box-value" id="displayDiscInstallment">0%</p>
+                            </div>
+                            <div class="box box-verde-claro">
+                                <p class="box-label">Valor Desc. Parcelado</p>
+                                <p class="box-value" id="displayInstallmentDiscountValue">R$ 0,00</p>
+                            </div>
+                        </div>
+                        <div class="box box-verde">
+                            <p class="box-label box-label-white">Total do Parcelamento</p>
+                            <p class="box-value box-value-white" id="displayTotalInstallment">R$ 0,00</p>
+                        </div>
+                    </div>
+
+                    <div class="card card-white">
+                        <h3 class="card-result-title border">Parcelado (Cartão de Crédito)</h3>
+                        <p class="dica-texto">Desconto sobre o saldo conforme a tabela de prazos (coluna Cartão).</p>
+                        <div class="grid-2">
+                            <div class="box box-verde-claro">
+                                <p class="box-label">% Desc. Cartão</p>
+                                <p class="box-value" id="displayDiscCredit">0%</p>
+                            </div>
+                            <div class="box box-verde-claro">
+                                <p class="box-label">Valor Desc. Parcelado</p>
+                                <p class="box-value" id="displayCreditCardDiscountValue">R$ 0,00</p>
+                            </div>
+                        </div>
+                        <div class="box box-verde">
+                            <p class="box-label box-label-white">Valor no Cartão (líquido)</p>
+                            <p class="box-value box-value-white" id="displayTotalCreditCard">R$ 0,00</p>
+                        </div>
+                    </div>
+
+                    <div class="card card-verde-escuro">
+                        <h3 class="card-result-title border border-verde">Resumo Total</h3>
+                        <p class="dica-texto dica-texto-branco">Total Desconto R$ = Desconto da Entrada + Valor Desc. Parcelado. Desconto Médio % = (Total Desconto ÷ Valor Produtos) × 100.</p>
+                        <div class="grid-2">
+                            <div>
+                                <p class="summary-label">Total Desconto R$</p>
+                                <p class="summary-value" id="displayTotalDiscount">R$ 0,00</p>
+                            </div>
+                            <div>
+                                <p class="summary-label">Desconto Médio %</p>
+                                <p class="summary-value summary-value-destaque" id="displayAverageDiscount">0%</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabela de Prazos (referência dos descontos) -->
+                    <div class="card card-white card-tabela">
+                        <h3 class="card-result-title border">Tabela de Prazos</h3>
+                        <p class="dica-texto">Percentual de desconto por forma de pagamento e número de parcelas. O cálculo usa esta tabela (ex.: PROCV no Excel).</p>
+                        <div class="tabela-prazos-wrap">
+                            <table class="tabela-prazos" aria-label="Tabela de descontos por prazo">
+                                <thead>
+                                    <tr>
+                                        <th>PRAZO</th>
+                                        <th>CREDIÁRIO</th>
+                                        <th>CARTÃO</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>À Vista</td><td>20%</td><td>20%</td></tr>
+                                    <tr><td>1x</td><td>20%</td><td>20%</td></tr>
+                                    <tr><td>4x</td><td>16%</td><td>18%</td></tr>
+                                    <tr><td>5x</td><td>12%</td><td>16%</td></tr>
+                                    <tr><td>7x</td><td>8%</td><td>14%</td></tr>
+                                    <tr><td>9x</td><td>4%</td><td>12%</td></tr>
+                                    <tr><td>11x</td><td>0%</td><td>10%</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

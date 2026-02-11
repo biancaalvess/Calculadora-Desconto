@@ -1,0 +1,403 @@
+/* Calculadora de Vendas - Grupo G5 | Verde #4d7031 e branco */
+:root {
+    --verde: #4d7031;
+    --verde-escuro: #3d5a27;
+    --verde-claro: #6b9344;
+    --verde-muito-claro: #c6e0b4;
+    --verde-fundo: #f0f5ed;
+    --branco: #ffffff;
+    --texto: #1a1a1a;
+    --texto-suave: #445544;
+    --borda: #a8c098;
+    --destaque: #f5e6a3;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: var(--verde-fundo);
+    color: var(--texto);
+    line-height: 1.5;
+    min-height: 100vh;
+}
+
+.app {
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+@media (min-width: 768px) {
+    .app {
+        padding: 2rem;
+    }
+}
+
+.container {
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.header-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.icon-calc {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--verde);
+}
+
+.title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--texto);
+}
+
+@media (min-width: 768px) {
+    .title {
+        font-size: 2.25rem;
+    }
+}
+
+.subtitle {
+    color: var(--texto-suave);
+    margin-top: 0.25rem;
+}
+
+/* Grid 2 colunas */
+.grid-layout {
+    display: grid;
+    gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+    .grid-layout {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Cards */
+.card {
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 14px rgba(77, 112, 49, 0.12);
+}
+
+.card-form {
+    background: var(--branco);
+    border: 1px solid var(--borda);
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--texto);
+    border-bottom: 2px solid var(--verde);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.card-white {
+    background: var(--branco);
+    border: 1px solid var(--borda);
+}
+
+.card-verde {
+    background: var(--verde);
+    color: var(--branco);
+}
+
+.card-verde-escuro {
+    background: var(--verde-escuro);
+    color: var(--branco);
+}
+
+/* Form */
+.card-form .field + .field {
+    margin-top: 1rem;
+}
+
+.label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--texto-suave);
+    margin-bottom: 0.5rem;
+}
+
+.input-wrap {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--verde-claro);
+}
+
+.input,
+select.input {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 2px solid var(--borda);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    color: var(--texto);
+    background: var(--branco);
+}
+
+select.input {
+    padding-left: 1rem;
+}
+
+.input:focus,
+select.input:focus {
+    outline: none;
+    border-color: var(--verde);
+    box-shadow: 0 0 0 3px rgba(77, 112, 49, 0.2);
+}
+
+.radio-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.radio-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--texto-suave);
+}
+
+.radio-label input {
+    accent-color: var(--verde);
+    cursor: pointer;
+}
+
+.radio-label:has(input:checked) {
+    color: var(--verde);
+}
+
+.btn-calcular {
+    width: 100%;
+    margin-top: 1.25rem;
+    padding: 0.85rem 1.25rem;
+    background: var(--verde);
+    color: var(--branco);
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-calcular:hover {
+    background: var(--verde-escuro);
+}
+
+.btn-calcular:focus-visible {
+    outline: 2px solid var(--verde-escuro);
+    outline-offset: 2px;
+}
+
+/* Erro */
+.erro {
+    padding: 0.75rem 1rem;
+    background: #fde8e8;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.erro[hidden] {
+    display: none !important;
+}
+
+/* Resultados */
+.results {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.card-result-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.card-result-title.border {
+    border-bottom: 1px solid var(--borda);
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
+    color: var(--texto);
+}
+
+.dica-texto {
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+}
+
+.dica-texto-branco {
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 1rem;
+}
+
+.card-verde-escuro .card-result-title.border.border-verde {
+    border-color: rgba(255,255,255,0.3);
+}
+
+.card-result-sub {
+    font-size: 0.875rem;
+    opacity: 0.9;
+    margin-bottom: 0.25rem;
+}
+
+.card-result-value {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+@media (min-width: 768px) {
+    .card-result-value {
+        font-size: 2.25rem;
+    }
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.card-white .grid-2:last-of-type {
+    margin-bottom: 0;
+}
+
+.box {
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.box-verde-claro {
+    background: var(--verde-muito-claro);
+}
+
+.box-verde-claro .box-label {
+    color: var(--verde-escuro);
+}
+
+.box-verde-claro .box-value {
+    color: var(--verde);
+    font-weight: 700;
+}
+
+.box-verde {
+    background: var(--verde);
+    color: var(--branco);
+}
+
+.box-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.box-value {
+    font-size: 1.5rem;
+}
+
+.box-label-white,
+.box-value-white {
+    color: var(--branco);
+}
+
+.box-label-white {
+    font-size: 0.875rem;
+    opacity: 0.9;
+}
+
+.box-value-white {
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+/* Resumo */
+.summary-label {
+    font-size: 0.875rem;
+    opacity: 0.85;
+    margin-bottom: 0.25rem;
+}
+
+.summary-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.summary-value-destaque {
+    color: var(--destaque);
+}
+
+/* Tabela de Prazos */
+.card-tabela {
+    margin-top: 0.5rem;
+}
+
+.tabela-prazos-wrap {
+    overflow-x: auto;
+}
+
+.tabela-prazos {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.tabela-prazos th,
+.tabela-prazos td {
+    border: 1px solid var(--borda);
+    padding: 0.5rem 0.75rem;
+    text-align: center;
+}
+
+.tabela-prazos thead th {
+    background: var(--verde);
+    color: var(--branco);
+    font-weight: 700;
+}
+
+.tabela-prazos tbody tr:nth-child(even) {
+    background: var(--verde-fundo);
+}
+
+.tabela-prazos tbody td:first-child {
+    text-align: left;
+    font-weight: 500;
+}
